@@ -16,19 +16,15 @@
     <body class="white">
       <div id="app">
         <nav>
-    <div class="nav-wrapper green accent-4">
+    <div class="nav-wrapper blue darken-2">
       <a href="#!" class="brand-logo">Planagram</a>
     </div>
   </nav>
-        <ul>
-  <li v-repeat="cards">
-    {{$value}}
-  </li>
-</ul>
+        
         <div class = "container">
           <div class="row">
             <div class="col s12 m6">
-              <div class="card green accent-4" v-for="card in cards">
+              <div class="card blue darken-2 modal-trigger" v-for="card in cards" data-target="modal2">
                 <div class="card-content white-text">
                   <span class="card-title">{{card.appoint}}</span>
                   <p>{{card.time}}</p>
@@ -62,10 +58,19 @@
             </div>
             <div class="modal-footer">
               <a href="#!" class="modal-action modal-close waves-effect waves btn-flat">Cancel</a>
-              <a href="#!" class="modal-action modal-close waves-effect waves btn-flat" @click="cards.push({appoint: EventName, time: time,loc: loc, desc: desc})" >Create Event</a>
+              <a href="#!" class="modal-action modal-close waves-effect waves btn-flat" @click="cards.push({appoint: EventName, time: time,loc: loc, desc: desc})"  onfocus = "this.EventName = ''">Create Event</a>
             </div>
           </div>
-          <a class="btn-floating modal-trigger right btn-large waves-effect waves-light green accent-4" data-target="modal1">
+          <div id="modal2" class="modal center">
+            <div class="modal-content">
+              <h4>Delete?</h4>
+            </div>
+            <div class="modal-footer">
+              <a href="#!" class="modal-action modal-close waves-effect waves btn-flat left">Cancel</a>
+              <a href="#!" class="modal-action modal-close waves-effect waves btn-flat right" @click="cards.pop(this.card)"><span class="red-text">Delete</span></a>
+            </div>
+          </div>
+          <a class="btn-floating modal-trigger right btn-large waves-effect waves-light blue darken-2" data-target="modal1">
             <i class="material-icons">add</i>
           </a>
         </div>
@@ -77,19 +82,18 @@
   el: '#app',
   data: {
     cards: [{appoint: "Doctor's Appointment", time: "9:00-10:00", loc: "1234 Lakeshire Drive", desc: "Check Up"}]
-  },
-  watch: {
-  input: function () {
-    if (isLocalStorage() /* function to detect if localstorage is supported*/) {
-      localStorage.setItem('cards', this.input)
+    ,
+    displayCardText() {
+      return this.card.appoint
     }
-  }
-}
+  },
+  
 })
 
 $(document).ready(function(){
     $('.modal').modal();
   });
+
 
 
        
