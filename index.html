@@ -13,19 +13,25 @@
       <script language="JavaScript" type="text/javascript" src="css/materialize/js/materialize.js"></script>
       <script src="lockr.js" type="text/javascript"></script>
     </head>
-    <body class="green accent-2">
-      <div id="button">
+    <body class="white">
+      <div id="app">
         <nav>
-    <div class="nav-wrapper green accent-3">
+    <div class="nav-wrapper green accent-4">
       <a href="#!" class="brand-logo">Planagram</a>
     </div>
   </nav>
+        <ul>
+  <li v-repeat="cards">
+    {{$value}}
+  </li>
+</ul>
         <div class = "container">
           <div class="row">
             <div class="col s12 m6">
-              <div class="card green accent-3" v-for="card in cards">
+              <div class="card green accent-4" v-for="card in cards">
                 <div class="card-content white-text">
                   <span class="card-title">{{card.appoint}}</span>
+                  <p>{{card.time}}</p>
                   <p class="card-sub-title">{{card.loc}}</p>
                   <p>{{card.desc}}</p>
                 </div>
@@ -41,6 +47,10 @@
                 <label for="EventName">Event Name</label>
               </div>
               <div class="input-field">
+                <input id="time" type="text" class="validate" v-model="time">
+                <label for="time">Time</label>
+              </div>
+              <div class="input-field">
                 <input id="loc" type="text" class="validate" v-model="loc">
                 <label for="loc">Location</label>
               </div>
@@ -52,10 +62,10 @@
             </div>
             <div class="modal-footer">
               <a href="#!" class="modal-action modal-close waves-effect waves btn-flat">Cancel</a>
-              <a href="#!" class="modal-action modal-close waves-effect waves btn-flat" @click="cards.push({appoint: EventName, loc: loc, desc: desc})" >Create Event</a>
+              <a href="#!" class="modal-action modal-close waves-effect waves btn-flat" @click="cards.push({appoint: EventName, time: time,loc: loc, desc: desc})" >Create Event</a>
             </div>
           </div>
-          <a class="btn-floating modal-trigger right btn-large waves-effect waves-light red" data-target="modal1">
+          <a class="btn-floating modal-trigger right btn-large waves-effect waves-light green accent-4" data-target="modal1">
             <i class="material-icons">add</i>
           </a>
         </div>
@@ -63,20 +73,25 @@
     </body>
     <script>
   
-  var button = new Vue({
-  el: '#button',
+  var app = new Vue({
+  el: '#app',
   data: {
-    cards: []
+    cards: [{appoint: "Doctor's Appointment", time: "9:00-10:00", loc: "1234 Lakeshire Drive", desc: "Check Up"}]
+  },
+  watch: {
+  input: function () {
+    if (isLocalStorage() /* function to detect if localstorage is supported*/) {
+      localStorage.setItem('cards', this.input)
+    }
   }
+}
 })
 
 $(document).ready(function(){
     $('.modal').modal();
   });
 
-$(document).ready(function(){
-    $('.sidenav').sidenav();
-  });
+
        
 </script>
   </html>
